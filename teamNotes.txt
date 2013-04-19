@@ -5,6 +5,7 @@ General rules:
   -give your branch a meaningful name that tells us what you're working on + author. Example: squ/hashTable
    git command: git checkout -b squ/hashTable
   -DON'T PUSH ONTO DEVELOP UNLESS YOU'RE ABSOLUTELY SURE YOU KNOW WHAT YOU'RE DOING. OTHERWISE GIT WILL VERY LIKELY COMPLAIN ABOUT MERGE ISSUES.
+  -To push, use git push origin qylim/branch
 
 2. Always run 'git status' before making a commit and again before pushing. 
   -Make sure you haven't unintentionally changed files that you weren't working on/lines that you didn't edit.
