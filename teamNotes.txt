@@ -1,0 +1,43 @@
+General rules:
+
+1. WORK ON YOUR OWN BRANCH
+
+  -give your branch a meaningful name that tells us what you're working on + author. Example: squ/hashTable
+   git command: git checkout -b squ/hashTable
+  -DON'T PUSH ONTO DEVELOP UNLESS YOU'RE ABSOLUTELY SURE YOU KNOW WHAT YOU'RE DOING. OTHERWISE GIT WILL VERY LIKELY COMPLAIN ABOUT MERGE ISSUES.
+  -To push, use git push origin qylim/branch
+
+2. Always run 'git status' before making a commit and again before pushing. 
+  -Make sure you haven't unintentionally changed files that you weren't working on/lines that you didn't edit.
+  -Use 'git diff' to see which lines were changed (again, make sure git doesn't register any changes in code that you didn't edit. 
+   For example, if you're working on addEdge() and git registers a change in weight() even though you don't think you modified it, 
+   you should probably double check to see if you haven't done anything you didn't mean)
+  -Also, git status tells you which branch you're on, so if you want to make sure you're not on develop, use that
+
+3. Add a short description to your commits that tell you what you've done since your last commit
+  -Example: git commit -m WUGraph.java 'Implemented addEdge method'
+  -In general, you should check to make sure your code compiles before committing, though sometimes its OK not to if your code depends on code
+   that someone else is currently working on.
+
+4. Never use git pull
+  -If you want an updated copy of WUGraph.java that somebody just finished writing or something, use git fetch (or git fetch origin squ/branch),
+   use the latter if you already know which branch has the changes you need.
+  -Note that git fetch doesn't do anything except update your local repo to 'fetch' any changes on the remote server not already on your local disk.
+   you still need to use git checkout squ/branch if that's the branch whose code you need.
+  -Typical way to do stuff.
+    1. git fetch
+    2. git checkout squ/addEdgeImplemented    //Changes Magdalene's branch to Stephen's branch so she can use his addEdge code
+    3. git checkout -b qylim/removeEdge       //Makes a new branch off of Stephen's branch so that when she pushes git doesn't try to merge her stuff 
+                                                with Stephen's automatically
+5. Already emphasized in the class, but don't break abstraction!
+
+
+MagLIM
+-DoublyLinkedList
+
+VinTIAN
+-Kruskal's
+
+SQU
+- hash table/hash code
+- removeVertex + getVertices
