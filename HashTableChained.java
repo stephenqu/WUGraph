@@ -207,9 +207,13 @@ public class HashTableChained{
   /**
    *  Resizes the hash table if the size of this list is greater
    *  than MAX_LOAD*table.length or less than MIN_LOAD*table.length.
+   *  Does nothing if size is less than 10
    **/
 
   private void resize(){
+    if (size < 10){
+	return;
+    }
     if (size > (MAX_LOAD * table.length) || size < (MIN_LOAD * table.length)){
 	int load_averaged = (int) ( 1.0 / (MAX_LOAD - MIN_LOAD) );
 	HashTableChained newTable = new HashTableChained(size*load_averaged);
