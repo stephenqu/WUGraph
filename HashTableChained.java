@@ -148,7 +148,7 @@ public class HashTableChained{
   }
 
   /** 
-   *  Search for the specified Object
+   *  Search for the specified Object by equals()
    *
    *  This method should run in O(1) time if the number of collisions is small.
    *
@@ -162,7 +162,7 @@ public class HashTableChained{
       DList list = (DList) table[index];
       for (DListNode node: list){
 	  try{
-	      if (item == node.item()){
+	      if (item.equals(node.item())){
 		  return node.item();
 	      }
 	  }catch (InvalidNodeException e){
@@ -174,7 +174,7 @@ public class HashTableChained{
   }
 
   /** 
-   *  Remove the specified object. If such an object is found,
+   *  Remove the specified object by equals(). If such an object is found,
    *  remove it from the table and return it; otherwise return null.
    *
    *  This method should run in O(1) time if the number of collisions is small.
@@ -190,7 +190,7 @@ public class HashTableChained{
       DList list = (DList) table[index];
       for (DListNode node: list){
 	  try{
-	      if (item == node.item()){
+	      if (item.equals(node.item())){
 		  size--;
 		  Object removed = node.item();
 		  node.remove();
