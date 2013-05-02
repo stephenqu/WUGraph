@@ -6,6 +6,7 @@ public class Vertex {
 
 	private Object item;
 	protected DList edges;
+	protected DListNode node;
 	
 
 	/**
@@ -24,6 +25,23 @@ public class Vertex {
 	
 	public Object item() {
 		return item;
+	}
+	
+	public Vertex other(Edge e){
+		Vertex a = null;
+		Vertex b = null;
+		try{
+			a = (Vertex) e.node1.item();
+			b = (Vertex) e.node2.item();
+		}catch (InvalidNodeException q){
+			System.err.println(q);
+			q.printStackTrace(); //This shouldn't happen
+		}
+		if (this.equals(a)){
+			return b;
+		}else{
+			return a;
+		}
 	}
 	
 	public boolean equals(Vertex v) {

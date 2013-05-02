@@ -4,10 +4,10 @@ import list.*;
 
 public class Edge {
 
-	Vertex vertex;
-	Vertex other;
+	VertexPair pair;
 	int weight;
-	Edge partner;
+	DListNode node1;
+	DListNode node2;
 
 	/**
 	 * Edge constructor creates an Edge object that consists of the first
@@ -22,26 +22,20 @@ public class Edge {
 	 *            is the associated weight of this edge.
 	 */
 	public Edge(Vertex a, Vertex b, int w) {
-		vertex = a;
-		other = b;
+		pair = new VertexPair(a.item(),b.item());
 		weight = w;
-		partner = new Edge(b, a, w, this);
-	}
-	
-	public Edge(Vertex a, Vertex b, int w, Edge p){
-		vertex = a;
-		other = b;
-		weight = w;
-		partner = p;
-	}
-	
-	
-	public Vertex other(){
-		return other;
 	}
 	
 	public int weight(){
 		return weight;
+	}
+	
+	public void setWeight(int w){
+		this.weight = w;
+	}
+	
+	public boolean equals(Edge e){
+		return (this.pair.equals(e.pair));
 	}
 	
 	public int hashCode(){

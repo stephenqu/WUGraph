@@ -16,6 +16,7 @@ public class WUGraph {
 	protected int numOfEdges;
 	protected DList adjList;
 	protected HashTableChained adjListHash;
+	protected HashTableChained edgeHash;
 
 	/**
 	 * WUGraph() constructs a graph having no vertices or edges.
@@ -25,6 +26,7 @@ public class WUGraph {
 	public WUGraph() {
 		adjList = new DList();
 		adjListHash = new HashTableChained(20);
+		edgeHash = new HashTableChained(50);
 		numOfVertices = 0;
 		numOfEdges = 0;
 	}
@@ -84,12 +86,10 @@ public class WUGraph {
 		Vertex v = new Vertex(vertex);
 		if (adjListHash.find(v) == null) {
 			adjList.insertBack(v);
+			v.node = (DListNode) adjList.back();
 			adjListHash.insert(v);
 			numOfVertices++;
 		}
-		
-		
-
 	}
 
 	/**
@@ -100,19 +100,20 @@ public class WUGraph {
 	 * Running time: O(d), where d is the degree of "vertex".
 	 */
 	public void removeVertex(Object vertex) {
-		try{
-			for (DListNode node : adjList) {
-				Vertex v = (Vertex) node.item();
-				if (v.equals(new Vertex(vertex))) {
-					for (DListNode edge : ((Vertex) node.item()).edges) {
-						edge.remove();
-						numOfEdges--;
-					}
-					node.remove();
-					numOfVertices--;
-				}
+		Vertex v = (Vertex) adjListHash.find(new Vertex(vertex));
+		if (v == null){
+			return;
+		}
+		try {
+			for (DListNode edge : v.edges()) {
+				((Edge) edge.item()).node2.remove();
+				((Edge) edge.item()).node1.remove();
+				edgeHash.remove(edge);
+				numOfEdges--;
 			}
-		}catch (InvalidNodeException e){
+			v.node.remove();
+			numOfVertices--;
+		} catch (InvalidNodeException e){
 			System.err.println(e);
 			e.printStackTrace(); //This shouldn't happen
 		}
@@ -136,7 +137,7 @@ public class WUGraph {
 	 * Running time: O(1).
 	 */
 	public int degree(Object vertex) {
-		Vertex v = adjListHash.find(vertex);
+		Vertex v = (Vertex) adjListHash.find(vertex);
 		if (v == null){
 			return 0;
 		}
@@ -162,16 +163,16 @@ public class WUGraph {
 	 * Running time: O(d), where d is the degree of "vertex".
 	 */
 	public Neighbors getNeighbors(Object vertex){
-		Vertex v = adjListHash.find(new Vertex(vertex));
+		Vertex v = (Vertex) adjListHash.find(new Vertex(vertex));
 		if (v != null && v.degree() > 0){
 			Object[] nList = new Object[v.degree()];
 			int[] wList = new int[v.degree()];
 			try{
-				DListNode e = ((DListNode) v.edges()).front();
+				DListNode e = (DListNode) (v.edges()).front();
 				for (int i = 0; i < v.degree(); i++){
-					nList[i] = ((DListNode) e.item()).other();
-					wList[i] = ((DListNode) e.item()).weight();
-					e = e.next();
+					nList[i] = (v.other((Edge) e.item())).item();
+					wList[i] = ((Edge) e.item()).weight();
+					e = (DListNode) e.next();
 				}
 			}catch (InvalidNodeException e){
 				System.err.println(e);
@@ -193,7 +194,24 @@ public class WUGraph {
 	 * 
 	 * Running time: O(1).
 	 */
-	public void addEdge(Object u, Object v, int weight);
+	public void addEdge(Object u, Object v, int weight){
+		Vertex a = (Vertex) adjListHash.find(new Vertex(u));
+		Vertex b = (Vertex) adjListHash.find(new Vertex(v));
+		if ((a!=null) && (b!=null)) {
+			Edge query = new Edge(a,b,weight);
+			Edge e = (Edge) edgeHash.find(query);
+			if (e != null){
+				e.setWeight(weight);
+			}else{
+				edgeHash.insert(query);
+				a.edges().insertBack(query);
+				query.node1 = (DListNode) a.edges().back();
+				b.edges().insertBack(query);
+				query.node2 = (DListNode) b.edges().back();
+				numOfEdges++;
+			}
+		}
+	}
 
 	/**
 	 * removeEdge() removes an edge (u, v) from the graph. If either of the
@@ -202,7 +220,25 @@ public class WUGraph {
 	 * 
 	 * Running time: O(1).
 	 */
-	public void removeEdge(Object u, Object v);
+	public void removeEdge(Object u, Object v){
+		Vertex a = (Vertex) adjListHash.find(new Vertex(u));
+		Vertex b = (Vertex) adjListHash.find(new Vertex(v));
+		try{
+			if ((a!=null) && (b!=null)) {
+				Edge query = new Edge(a,b,0);
+				Edge e = (Edge) edgeHash.find(query);
+				if (e != null){
+					e.node2.remove();
+					e.node1.remove();
+					edgeHash.remove(e);
+					numOfEdges--;
+				}
+			}
+		}catch (InvalidNodeException q){
+			System.err.println(q);
+			q.printStackTrace(); //This shouldn't happen
+		}
+	}
 
 	/**
 	 * isEdge() returns true if (u, v) is an edge of the graph. Returns false if
@@ -211,7 +247,9 @@ public class WUGraph {
 	 * 
 	 * Running time: O(1).
 	 */
-	public boolean isEdge(Object u, Object v);
+	public boolean isEdge(Object u, Object v){
+		return (edgeHash.find(new Edge(new Vertex(u),new Vertex(v),0)) != null);
+	}
 
 	/**
 	 * weight() returns the weight of (u, v). Returns zero if (u, v) is not an
@@ -227,6 +265,11 @@ public class WUGraph {
 	 * 
 	 * Running time: O(1).
 	 */
-	public int weight(Object u, Object v);
-
+	public int weight(Object u, Object v){
+		Edge e = (Edge) edgeHash.find(new Edge(new Vertex(u),new Vertex(v),0));
+		if (e != null){
+			return e.weight();
+		}
+		return 0;
+	}
 }
