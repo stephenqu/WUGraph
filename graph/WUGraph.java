@@ -3,6 +3,7 @@
 package graph;
 
 import list.*;
+import hash.*;
 
 /**
  * The WUGraph class represents a weighted, undirected graph. Self-edges are
@@ -11,9 +12,10 @@ import list.*;
 
 public class WUGraph {
 
-	int numOfVertices;
-	int numOfEdges;
-	DList adjList;
+	protected int numOfVertices;
+	protected int numOfEdges;
+	protected DList adjList;
+	protected HashTableChained adjListHash;
 
 	/**
 	 * WUGraph() constructs a graph having no vertices or edges.
@@ -22,6 +24,7 @@ public class WUGraph {
 	 */
 	public WUGraph() {
 		adjList = new DList();
+		adjListHash = new HashTableChained(20);
 		numOfVertices = 0;
 		numOfEdges = 0;
 	}
@@ -58,9 +61,14 @@ public class WUGraph {
 	public Object[] getVertices() {
 		Object[] listVertices = new Object[this.numOfVertices];
 		int count = 0;
-		for (ListNode node : adjList) {	//apparently still need a try catch
-			listVertices[count] = node;
-			count++;
+		try{
+			for (DListNode node : adjList) {	//apparently still need a try catch
+				listVertices[count] = node.item();
+				count++;
+			}	
+		}catch (InvalidNodeException e){
+			System.err.println(e);
+			e.printStackTrace(); //This shouldn't happen
 		}
 		return listVertices;
 	}
@@ -73,14 +81,11 @@ public class WUGraph {
 	 * Running time: O(1).
 	 */
 	public void addVertex(Object vertex) {
-		//find object using hash table thingy
-		if (find(new Vertex(vertex)) != null) { //use the hash table function; item already in it
-			
-		} else {
-			Vertex v = new Vertex(vertex);
+		Vertex v = new Vertex(vertex);
+		if (adjListHash.find(v) == null) {
 			adjList.insertBack(v);
+			adjListHash.insert(v);
 			numOfVertices++;
-			//add v into hash table (v and v are same)
 		}
 		
 		
@@ -95,7 +100,22 @@ public class WUGraph {
 	 * Running time: O(d), where d is the degree of "vertex".
 	 */
 	public void removeVertex(Object vertex) {
-		//PUSH BACK
+		try{
+			for (DListNode node : adjList) {
+				Vertex v = (Vertex) node.item();
+				if (v.equals(new Vertex(vertex))) {
+					for (DListNode edge : ((Vertex) node.item()).edges) {
+						edge.remove();
+						numOfEdges--;
+					}
+					node.remove();
+					numOfVertices--;
+				}
+			}
+		}catch (InvalidNodeException e){
+			System.err.println(e);
+			e.printStackTrace(); //This shouldn't happen
+		}
 	}
 
 	/**
@@ -105,9 +125,7 @@ public class WUGraph {
 	 * Running time: O(1).
 	 */
 	public boolean isVertex(Object vertex) {
-		if (find(new Vertex(vertex)) != null) {
-			return true;
-		} return false;
+		return (adjListHash.find(new Vertex(vertex)) != null);
 	}
 
 	/**
@@ -118,13 +136,11 @@ public class WUGraph {
 	 * Running time: O(1).
 	 */
 	public int degree(Object vertex) {
-		if (!isVertex(vertex)) {
+		Vertex v = adjListHash.find(vertex);
+		if (v == null){
 			return 0;
 		}
-		int degree = 1;		//accounts for self-edge
-		//hash the object then get length of that vertex.edges (dlist)
-		Vertex a = find(new Vertex(vertex)); //must cast this to a vertex obj?
-		return a.Degree();
+		return v.degree();
 	}
 
 	/**
@@ -145,7 +161,28 @@ public class WUGraph {
 	 * 
 	 * Running time: O(d), where d is the degree of "vertex".
 	 */
-	public Neighbors getNeighbors(Object vertex);
+	public Neighbors getNeighbors(Object vertex){
+		Vertex v = adjListHash.find(new Vertex(vertex));
+		if (v != null && v.degree() > 0){
+			Object[] nList = new Object[v.degree()];
+			int[] wList = new int[v.degree()];
+			try{
+				DListNode e = ((DListNode) v.edges()).front();
+				for (int i = 0; i < v.degree(); i++){
+					nList[i] = ((DListNode) e.item()).other();
+					wList[i] = ((DListNode) e.item()).weight();
+					e = e.next();
+				}
+			}catch (InvalidNodeException e){
+				System.err.println(e);
+				e.printStackTrace(); //This shouldn't happen
+			}
+			Neighbors n = new Neighbors();
+			n.neighborList = nList;
+			n.weightList = wList;
+		}
+		return null;
+	}
 
 	/**
 	 * addEdge() adds an edge (u, v) to the graph. If either of the parameters u

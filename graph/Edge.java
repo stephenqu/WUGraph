@@ -4,8 +4,8 @@ import list.*;
 
 public class Edge {
 
-	Object Obj1;
-	Object Obj2;
+	Vertex vertex;
+	Vertex other;
 	int weight;
 	Edge partner;
 
@@ -21,12 +21,31 @@ public class Edge {
 	 * @param w
 	 *            is the associated weight of this edge.
 	 */
-	protected Edge(Object a, Object b, int w) {
-		Obj1 = a;
-		Obj2 = b;
+	public Edge(Vertex a, Vertex b, int w) {
+		vertex = a;
+		other = b;
 		weight = w;
-		// to find partner, traverse through adjacencylist, find vertex.obj1 =
-		// b; then find the corresponding edge
-
+		partner = new Edge(b, a, w, this);
 	}
+	
+	public Edge(Vertex a, Vertex b, int w, Edge p){
+		vertex = a;
+		other = b;
+		weight = w;
+		partner = p;
+	}
+	
+	
+	public Vertex other(){
+		return other;
+	}
+	
+	public int weight(){
+		return weight;
+	}
+	
+	public int hashCode(){
+		return 0; //TODO
+	}
+	
 }
