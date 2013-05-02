@@ -20,6 +20,8 @@ public class HashTableChained{
    **/
     private List[] table;
     private int size;
+    private final double MAX_LOAD = 0.75;
+    private final double MIN_LOAD = 0.25;
 
 
   /** 
@@ -29,8 +31,7 @@ public class HashTableChained{
    **/
 
   public HashTableChained(int sizeEstimate) {
-      double load_factor = 0.75;
-      int n = (int) ((double) (sizeEstimate) / load_factor);
+      int n = (int) ((double) (sizeEstimate) / MAX_LOAD);
       size = 0;
       table = new DList[computePrime(n)];
   }
@@ -140,6 +141,7 @@ public class HashTableChained{
    **/
 
   public void insert(Object item) {
+      resize();
       int index = compFunction(item.hashCode());
       size++;
       table[index].insertBack(item);
@@ -183,6 +185,7 @@ public class HashTableChained{
    */
 
   public Object remove(Object item) {
+      resize();
       int index = compFunction(item.hashCode());
       DList list = (DList) table[index];
       for (DListNode node: list){
@@ -199,6 +202,31 @@ public class HashTableChained{
 	  }
       }
     return null;
+  }
+
+  /**
+   *  Resizes the hash table if the size of this list is greater
+   *  than MAX_LOAD*table.length or less than MIN_LOAD*table.length.
+   **/
+
+  private void resize(){
+    if (size > (MAX_LOAD * table.length) || size < (MIN_LOAD * table.length)){
+	int load_averaged = (int) ( 1.0 / (MAX_LOAD - MIN_LOAD) );
+	HashTableChained newTable = new HashTableChained(size*load_averaged);
+	for (int i = 0; i < table.length; i++){
+	    DList list = (DList) table[i];
+	    try{
+		for (DListNode node : list){
+		    newTable.insert(node.item());
+		}
+	    }catch (InvalidNodeException e){
+		System.err.print(e);
+		e.printStackTrace(); //This should never happen
+	    }
+	}
+	table = newTable.table;
+	size = newTable.size;
+    }
   }
 
   /**
