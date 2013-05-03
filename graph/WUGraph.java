@@ -12,8 +12,6 @@ import hash.*;
 
 public class WUGraph {
 
-	protected int numOfVertices;
-	protected int numOfEdges;
 	protected DList adjList;
 	protected HashTableChained adjListHash;
 	protected HashTableChained edgeHash;
@@ -27,8 +25,6 @@ public class WUGraph {
 		adjList = new DList();
 		adjListHash = new HashTableChained(20);
 		edgeHash = new HashTableChained(50);
-		numOfVertices = 0;
-		numOfEdges = 0;
 	}
 
 	/**
@@ -37,7 +33,7 @@ public class WUGraph {
 	 * Running time: O(1).
 	 */
 	public int vertexCount() {
-		return numOfVertices;
+	    return adjListHash.size();
 	}
 
 	/**
@@ -46,7 +42,7 @@ public class WUGraph {
 	 * Running time: O(1).
 	 */
 	public int edgeCount() {
-		return numOfEdges;
+	    return edgeHash.size();
 	}
 
 	/**
@@ -61,12 +57,12 @@ public class WUGraph {
 	 * Running time: O(|V|).
 	 */
 	public Object[] getVertices() {
-		Object[] listVertices = new Object[this.numOfVertices];
+	    Object[] listVertices = new Object[vertexCount()];
 		int count = 0;
 		try{
 			for (DListNode node : adjList) {	//apparently still need a try catch
-				listVertices[count] = node.item();
-				count++;
+			    listVertices[count] = ((Vertex) node.item()).item();
+			    count++;
 			}	
 		}catch (InvalidNodeException e){
 			System.err.println(e);
@@ -88,7 +84,6 @@ public class WUGraph {
 			adjList.insertBack(v);
 			v.node = (DListNode) adjList.back();
 			adjListHash.insert(v);
-			numOfVertices++;
 		}
 	}
 
@@ -102,20 +97,23 @@ public class WUGraph {
 	public void removeVertex(Object vertex) {
 		Vertex v = (Vertex) adjListHash.find(new Vertex(vertex));
 		if (v == null){
-			return;
+		    return;
 		}
 		try {
+		    if (v.edges().length() > 0){
 			for (DListNode edge : v.edges()) {
-				((Edge) edge.item()).node2.remove();
-				((Edge) edge.item()).node1.remove();
-				edgeHash.remove(edge);
-				numOfEdges--;
+			    edgeHash.remove(edge.item());
+			    DListNode vertex1 =  ((Edge) edge.item()).node1;
+			    DListNode vertex2 =  ((Edge) edge.item()).node2;
+			    vertex1.remove();
+			    if (vertex2 != null){
+				vertex2.remove();
+			    }
 			}
-			v.node.remove();
-			numOfVertices--;
-		} catch (InvalidNodeException e){
-			System.err.println(e);
-			e.printStackTrace(); //This shouldn't happen
+		    }
+		    v.node.remove();
+		    adjListHash.remove(v);
+		} catch (InvalidNodeException e){ //Do nothing if Vertex is no longer in adjList
 		}
 	}
 
@@ -126,7 +124,7 @@ public class WUGraph {
 	 * Running time: O(1).
 	 */
 	public boolean isVertex(Object vertex) {
-		return (adjListHash.find(new Vertex(vertex)) != null);
+	    return (adjListHash.find(new Vertex(vertex)) != null);
 	}
 
 	/**
@@ -137,11 +135,11 @@ public class WUGraph {
 	 * Running time: O(1).
 	 */
 	public int degree(Object vertex) {
-		Vertex v = (Vertex) adjListHash.find(vertex);
-		if (v == null){
-			return 0;
-		}
-		return v.degree();
+	    Vertex v = (Vertex) adjListHash.find(new Vertex(vertex));
+	    if (v == null){
+		return 0;
+	    }
+	    return v.degree();
 	}
 
 	/**
@@ -181,6 +179,7 @@ public class WUGraph {
 			Neighbors n = new Neighbors();
 			n.neighborList = nList;
 			n.weightList = wList;
+			return n;
 		}
 		return null;
 	}
@@ -206,9 +205,10 @@ public class WUGraph {
 				edgeHash.insert(query);
 				a.edges().insertBack(query);
 				query.node1 = (DListNode) a.edges().back();
-				b.edges().insertBack(query);
-				query.node2 = (DListNode) b.edges().back();
-				numOfEdges++;
+				if (!(a.equals(b))){
+				    b.edges().insertBack(query);
+				    query.node2 = (DListNode) b.edges().back();
+				}
 			}
 		}
 	}
@@ -228,10 +228,11 @@ public class WUGraph {
 				Edge query = new Edge(a,b,0);
 				Edge e = (Edge) edgeHash.find(query);
 				if (e != null){
-					e.node2.remove();
 					e.node1.remove();
+					if (e.node2 != null){
+					    e.node2.remove();
+					}
 					edgeHash.remove(e);
-					numOfEdges--;
 				}
 			}
 		}catch (InvalidNodeException q){

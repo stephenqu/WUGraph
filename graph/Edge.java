@@ -33,13 +33,21 @@ public class Edge {
 	public void setWeight(int w){
 		this.weight = w;
 	}
+
+    public VertexPair pair(){
+	return pair;
+    }
 	
-	public boolean equals(Edge e){
-		return (this.pair.equals(e.pair));
+	public boolean equals(Object e){
+	    if (e instanceof Edge){
+		return (this.pair.equals(((Edge) e).pair));
+	    }else{
+		return false;
+	    }
 	}
 	
 	public int hashCode(){
-		return 0; //TODO
+	    return pair.hashCode();
 	}
 	
 }

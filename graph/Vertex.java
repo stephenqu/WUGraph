@@ -16,11 +16,11 @@ public class Vertex {
 	 */
 	public Vertex(Object name) {
 		item = name;
-		DList edges = new DList(); //each item in the Dlist should be a vertex pair
+		edges = new DList(); //each item in the Dlist should be a vertex pair
 	}
 	
 	public int degree() {
-		return edges.length();
+	    return edges.length();
 	}
 	
 	public Object item() {
@@ -30,13 +30,8 @@ public class Vertex {
 	public Vertex other(Edge e){
 		Vertex a = null;
 		Vertex b = null;
-		try{
-			a = (Vertex) e.node1.item();
-			b = (Vertex) e.node2.item();
-		}catch (InvalidNodeException q){
-			System.err.println(q);
-			q.printStackTrace(); //This shouldn't happen
-		}
+		a = new Vertex(e.pair().object1);
+		b = new Vertex(e.pair().object2);
 		if (this.equals(a)){
 			return b;
 		}else{
@@ -44,8 +39,12 @@ public class Vertex {
 		}
 	}
 	
-	public boolean equals(Vertex v) {
-		return this.item.equals(v.item); 
+	public boolean equals(Object v) {
+	    if (v instanceof Vertex){
+		return this.item.equals(((Vertex) v).item); 
+	    }else{
+		return false;
+	    }
 	}
 	
 	public DList edges(){
