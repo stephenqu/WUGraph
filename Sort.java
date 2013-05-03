@@ -1,4 +1,4 @@
-import graph.Edge;
+import graph.*;
 import java.util.Random;
 
 public class Sort {
@@ -22,7 +22,7 @@ public class Sort {
 	 * or end is null, subtract the index/end int until it is not null. Partition sorts the Edge array and returns a 
 	 * new int index
 	 */
-	private static int partition(Edge[] array, int begin, int end) {
+	private static int partition(Edge2[] array, int begin, int end) {
 		int index = begin + RND.nextInt(end - begin + 1);
 		while (array[index] == null) {
 			index--;
@@ -48,7 +48,7 @@ public class Sort {
 	   *  @param lo0     left boundary of array partition
 	   *  @param hi0     right boundary of array partition
 	   **/
-	private static void qsort(Edge[] array, int begin, int end) {
+	private static void qsort(Edge2[] array, int begin, int end) {
 		if (end > begin) {
 			int index = partition(array, begin, end);
 			qsort(array, begin, index - 1);
@@ -60,7 +60,7 @@ public class Sort {
 	   *  Quicksort algorithm.
 	   *  @param a an array of int items.
 	   **/
-	public static void sort(Edge[] array) {
+	public static void sort(Edge2[] array) {
 		qsort(array, 0, array.length - 1);
 	}
 	

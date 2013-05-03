@@ -18,15 +18,15 @@ public class Kruskal {
 	public static WUGraph minSpanTree(WUGraph g) {
 		WUGraph T = new WUGraph(); 
 		Object[] vertices = g.getVertices(); 
-		HashTableChained vertexHashValue = new HashTableChained(vertices.length);
-		Edge[] edgeList = new Edge[2 * g.edgeCount()]; 
+		HashTable2 vertexHashValue = new HashTable2(vertices.length);
+		Edge2[] edgeList = new Edge2[2 * g.edgeCount()]; 
 		int counter = 0; 
 		for (int a = 0; a < vertices.length; a++) {
-			vertexHashValue.insert(vertices[a], new InWteger(a));
+			vertexHashValue.insert(vertices[a], new Integer(a));
 			T.addVertex(vertices[a]);
 			Neighbors n = g.getNeighbors(vertices[a]); 
 			for (int b = 0; b < n.neighborList.length; b++) {
-				edgeList[counter] = new Edge(vertices[a], n.neighborList[b], n.weightList[b]);
+				edgeList[counter] = new Edge2(vertices[a], n.neighborList[b], n.weightList[b]);
 				counter++;
 			}
 		}
@@ -36,13 +36,13 @@ public class Kruskal {
 			if (edgeList[count] == null) {
 				break;
 			}
-			Edge edge = edgeList[count];
-			Object VertexU = edge.vertex1();
-			Object VertexV = edge.vertex2();			
+			Edge2 Edge2 = edgeList[count];
+			Object VertexU = Edge2.vertex1();
+			Object VertexV = Edge2.vertex2();			
 			int vertUval = ( (Integer) vertexHashValue.find(VertexU).value()).intValue();
 			int vertVval = ( (Integer) vertexHashValue.find(VertexV).value()).intValue();
 			if (!(minSpanTree.find(vertUval) == minSpanTree.find(vertVval)) ) {
-				T.addEdge(VertexU, VertexV, edge.weight());
+				T.addEdge(VertexU, VertexV, Edge2.weight());
 				minSpanTree.union(minSpanTree.find(vertUval),minSpanTree.find(vertVval));
 			}
 		}
