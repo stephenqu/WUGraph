@@ -35,6 +35,7 @@ public class HashTableChained{
       int n = (int) ((double) (sizeEstimate) / MAX_LOAD);
       size = 0;
       table = new DList[computePrime(n)];
+      makeEmpty();
   }
 
   /** 
@@ -45,6 +46,7 @@ public class HashTableChained{
   public HashTableChained() {
       table = new DList[101];
       size = 0;
+      makeEmpty();
   }
 
   /**
@@ -208,18 +210,35 @@ public class HashTableChained{
   /**
    *  Resizes the hash table if the size of this list is greater
    *  than MAX_LOAD*table.length or less than MIN_LOAD*table.length.
-   *  Does nothing if size is less than 10
+   *  Does nothing if size is less than 10, unless table has more
+   *  than 20 buckets, in which case table is resized to 19.
    **/
 
   private void resize(){
-    if (size > (MAX_LOAD * table.length) || size < (MIN_LOAD * table.length)){
-	int load_averaged = (int) ( 1.0 / (MAX_LOAD - MIN_LOAD) );
-	HashTableChained newTable = new HashTableChained(size*load_averaged);
+    if (size < 10){
+	if (table.length > 20){
+	    int newSize = (int) (19 * MAX_LOAD);
+	    resize(newSize);
+	}else{
+	    return;
+	}
+    }
+    else if (size > (MAX_LOAD * table.length) || size < (MIN_LOAD * table.length)){
+	double load_averaged = ( 1.0 / (MAX_LOAD - MIN_LOAD) );
+	int newSize = (int) (size*load_averaged);
+	resize(newSize);
+    }
+  }
+
+    private void resize(int newSize){
+	HashTableChained newTable = new HashTableChained(newSize);
 	for (int i = 0; i < table.length; i++){
 	    DList list = (DList) table[i];
 	    try{
 		for (DListNode node : list){
-		    newTable.insert(node.item());
+		    int index = newTable.compFunction(node.item().hashCode());
+		    newTable.table[index].insertBack(node.item());
+		    newTable.size++;
 		}
 	    }catch (InvalidNodeException e){
 		System.err.print(e);
@@ -229,14 +248,22 @@ public class HashTableChained{
 	table = newTable.table;
 	size = newTable.size;
     }
-  }
 
   /**
    *  Remove all items from the table.
    */
   public void makeEmpty() {
-      table = new DList[table.length];
       size = 0;
+      for (int i = 0; i < table.length; i++){
+	  table[i] = new DList();
+      }
   }
+
+    public void printCollisions(){
+	for (int i = 0; i < table.length; i++){
+	    System.out.println(((DList) table[i]).length());
+	}
+	    
+    }
 
 }
