@@ -22,32 +22,68 @@ public class Edge {
 	 *            is the associated weight of this edge.
 	 */
 	public Edge(Vertex a, Vertex b, int w) {
-		pair = new VertexPair(a.item(),b.item());
+		pair = new VertexPair(a.item(), b.item());
 		weight = w;
 	}
-	
-	public int weight(){
+
+	/**
+	 * This weight() method returns the weight of the edge, which in itself is
+	 * hidden.
+	 * 
+	 * @return an integer representative of the weight of the edge
+	 */
+	public int weight() {
 		return weight;
 	}
-	
-	public void setWeight(int w){
+
+	/**
+	 * This setWeight() method allows an outside source to change the weight of
+	 * an edge, without violating abstraction rules.
+	 * 
+	 * @param w
+	 *            is the new weight for the edge.
+	 */
+	public void setWeight(int w) {
 		this.weight = w;
 	}
 
-    public VertexPair pair(){
-	return pair;
-    }
-	
-	public boolean equals(Object e){
-	    if (e instanceof Edge){
-		return (this.pair.equals(((Edge) e).pair));
-	    }else{
-		return false;
-	    }
+	/**
+	 * This pair() method gives the program access to the pair object
+	 * constructed by Edge
+	 * 
+	 * @return VertexPair pair
+	 */
+	public VertexPair pair() {
+		return pair;
 	}
-	
-	public int hashCode(){
-	    return pair.hashCode();
+
+	/**
+	 * This equals() method overrides the default equals method and compares
+	 * whether an edge is the same as another edge, regardless of the order in
+	 * which the vertices are provided and the edge's weight
+	 * 
+	 * @param e
+	 *            is the edge given to compare the "this" edge
+	 * @return true if both edges are equals, false otherwise
+	 */
+	public boolean equals(Object e) {
+		if (e instanceof Edge) {
+			return (this.pair.equals(((Edge) e).pair));
+		} else {
+			return false;
+		}
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode() Overrides default java hash code by
+	 * calling VertexPair's hash code
+	 * 
+	 * @return integer for the hash code
+	 */
+	public int hashCode() {
+		return pair.hashCode();
+	}
+
 }

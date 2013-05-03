@@ -2,15 +2,19 @@ import graph.*;
 import java.util.Random;
 
 public class Sort {
-	
+
 	static final Random RND = new Random();
 
 	/**
-	   *  Method to swap two Objects in an array.
-	   *  @param a an array of Objects.
-	   *  @param index1 the index of the first int to be swapped.
-	   *  @param index2 the index of the second int to be swapped.
-	   **/
+	 * Method to swap two Objects in an array.
+	 * 
+	 * @param a
+	 *            an array of Objects.
+	 * @param i
+	 *            the index of the first int to be swapped.
+	 * @param j
+	 *            the index of the second int to be swapped.
+	 **/
 	private static void swap(Object[] array, int i, int j) {
 		Object tmp = array[i];
 		array[i] = array[j];
@@ -18,9 +22,16 @@ public class Sort {
 	}
 
 	/**
-	 * partition(Edge[] array, int begin, int end) takes in an Edge array, and two ints: the beginning and end. If index
-	 * or end is null, subtract the index/end int until it is not null. Partition sorts the Edge array and returns a 
-	 * new int index
+	 * Partition sorts the Edge array and returns a new int index. If index or
+	 * end is null, subtract the index/end int until it is not null.
+	 * 
+	 * @param array
+	 *            is an Edge array
+	 * @param begin
+	 *            is an int that represents the beginning of the array
+	 * @param end
+	 *            is an int that represents the end of an array
+	 * @return
 	 */
 	private static int partition(Edge2[] array, int begin, int end) {
 		int index = begin + RND.nextInt(end - begin + 1);
@@ -29,7 +40,7 @@ public class Sort {
 		}
 		int pivot = array[index].weight();
 		while (array[end] == null) {
-			end --;
+			end--;
 		}
 		swap(array, index, end);
 		for (int i = index = begin; i < end; ++i) {
@@ -41,13 +52,17 @@ public class Sort {
 		return (index);
 	}
 
-	 /**
-	   *  This is a generic Quick Sort algorithm. It handles arrays that are already sorted, 
-	   *  and arrays with duplicate keys.
-	   *  @param a       an integer array
-	   *  @param lo0     left boundary of array partition
-	   *  @param hi0     right boundary of array partition
-	   **/
+	/**
+	 * This is a generic Quick Sort algorithm. It handles arrays that are
+	 * already sorted, and arrays with duplicate keys.
+	 * 
+	 * @param array
+	 *            an integer array
+	 * @param begin
+	 *            left boundary of array partition
+	 * @param end
+	 *            right boundary of array partition
+	 **/
 	private static void qsort(Edge2[] array, int begin, int end) {
 		if (end > begin) {
 			int index = partition(array, begin, end);
@@ -56,12 +71,14 @@ public class Sort {
 		}
 	}
 
-	 /**
-	   *  Quicksort algorithm.
-	   *  @param a an array of int items.
-	   **/
+	/**
+	 * Quicksort algorithm.
+	 * 
+	 * @param array
+	 *            an array of int items.
+	 **/
 	public static void sort(Edge2[] array) {
 		qsort(array, 0, array.length - 1);
 	}
-	
+
 }
