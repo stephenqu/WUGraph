@@ -2,7 +2,7 @@
 
 import graph.*;
 import set.*;
-import dict.*;
+import hash.*;
 
 ///**
 // * The Kruskal class contains the method minSpanTree(), which implements
@@ -18,11 +18,11 @@ public class Kruskal {
 	public static WUGraph minSpanTree(WUGraph g) {
 		WUGraph T = new WUGraph(); 
 		Object[] vertices = g.getVertices(); 
-		HashTable2 vertexHashValue = new HashTable2(vertices.length);
+		HashTableChained vertexHashValue = new HashTableChained(vertices.length);
 		Edge2[] edgeList = new Edge2[2 * g.edgeCount()]; 
 		int counter = 0; 
 		for (int a = 0; a < vertices.length; a++) {
-			vertexHashValue.insert(vertices[a], new Integer(a));
+		    vertexHashValue.insert(new Entry(vertices[a], new Integer(a)) );
 			T.addVertex(vertices[a]);
 			Neighbors n = g.getNeighbors(vertices[a]); 
 			for (int b = 0; b < n.neighborList.length; b++) {
@@ -38,9 +38,9 @@ public class Kruskal {
 			}
 			Edge2 Edge2 = edgeList[count];
 			Object VertexU = Edge2.vertex1();
-			Object VertexV = Edge2.vertex2();			
-			int vertUval = ( (Integer) vertexHashValue.find(VertexU).value()).intValue();
-			int vertVval = ( (Integer) vertexHashValue.find(VertexV).value()).intValue();
+			Object VertexV = Edge2.vertex2();
+			int vertUval = ( (Integer) ((Entry) vertexHashValue.find(new Entry(VertexU,new Integer(0)) )).value()).intValue();
+			int vertVval = ( (Integer) ((Entry) vertexHashValue.find(new Entry(VertexV,new Integer(0)) )).value()).intValue();
 			if (!(minSpanTree.find(vertUval) == minSpanTree.find(vertVval)) ) {
 				T.addEdge(VertexU, VertexV, Edge2.weight());
 				minSpanTree.union(minSpanTree.find(vertUval),minSpanTree.find(vertVval));

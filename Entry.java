@@ -1,7 +1,5 @@
 /* Entry.java */
  
-package dict;
- 
 /**
  *  A class for dictionary entries.
  *
@@ -14,6 +12,14 @@ public class Entry {
   protected Object key;
   protected Object value;
  
+    public Entry(Object k, Object v){
+	key = k;
+	value = v;
+    }
+    
+    public Entry(){
+    }
+
   public Object key() {
     return key;
   }
@@ -21,5 +27,17 @@ public class Entry {
   public Object value() {
     return value;
   }
+    
+    public boolean equals(Object other){
+	if (other instanceof Entry){
+	    return (this.key).equals(((Entry) other).key);
+	}else{
+	    return false;
+	}
+    }
+
+    public int hashCode(){
+	return this.key.hashCode();
+    }
  
 }
