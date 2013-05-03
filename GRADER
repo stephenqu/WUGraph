@@ -1,0 +1,316 @@
+                                     GRADER
+
+Name of student running submit: Stephen Qu
+Login of student running submit: cs61b- FILL IN
+
+Second team member's name: Vincent Tian
+Second team member's login: cs61b-jl
+
+Third team member's name (if any): Qiu Yuan Lim
+Third team member's login: cs61b-jk
+
+IMPORTANT:  Once you've submitted Project 2 once, the same team member should
+submit always.  If a different teammate must submit, inform cs61b@cory.eecs of
+all the details.  Include a complete list of team members, and let us know
+which submission you want graded.
+
+If you've submitted your project once, or even written a substantial amount of
+code together, you may not change partners without the permission of the
+instructor.
+===============================================================================
+Does your program compile without errors?
+
+Yes.
+
+Have you tested your program on the machines in the Soda CS 61B lab?
+
+Yes.
+
+Is there anything else the graders should know to help them read your project?
+
+No.
+
+Describe the classes, modules, and interfaces you designed before and while you
+implemented the project.  Your description should include:
+  -  A list of the classes your program uses.
+  -  A list of each of the "modules" used, similar to
+     the list in the "Teamwork" section of the README (but hopefully more
+     detailed).
+  -  For each module, list the class(es) the module is implemented in.
+  -  For each module, say which of your team members implemented it.
+  -  For each module, describe its interface--specifically, the prototype and
+     behavior of each method that is available for external callers (outside
+     the module) to call.  Don't include methods that are only meant to be
+     called from within the module.
+
+     For each method, provide (1) a method prototype and (2) a complete,
+     unambiguous description of the behavior of the method/module.  This
+     description should also appear before the method in your code's comments.
+
+You will probably need to change some of your design decisions as you go; be
+sure to modify this file to reflect these changes before you submit your
+project.  Your design of classes and interfaces with be worth about 10% of your
+grade.
+
+
+---------------------------------------------------------------------------------------------------|
+Classes: Board, Connections, MachinePlayer, Move, Player, SList, SListNode                         |
+---------------------------------------------------------------------------------------------------|
+Coder    |  Module    |  Methods                                       |  class the methods are in |
+---------|------------|------------------------------------------------|---------------------------|
+Vincent  |   1        |   WUGraph miniSpanTree		               |  class Kruskal	           |
+         |	      |                    	 	               |  class Edge         	   |
+	 |	      |                   		               |  class Sort   	           |
+---------|------------|------------------------------------------------|---------------------------|
+Magdalene|   2        |   addVertex()		                       |  class WUGraph 	   |
+	 |	      |	  removeVertex()			       |     	  		   |
+	 |	      |   degree()                                     |	       		   |	
+	 |	      |	  isVertex()     	 		       |         		   |	
+	 |	      | 	  				       |               		   |
+---------|------------|------------------------------------------------|---------------------------|
+Stephen  |   3        |  getNeighbors()				       |			   |
+	 |	      |	 addEdge()				       |			   |
+	 |	      |	 removeEdge()				       |			   |
+	 |	      |	 isEdge()				       |			   |
+	 |	      |	 weight()				       |	      	           | 
+         |            |   					       |                           |
+---------|------------|------------------------------------------------|---------------------------|
+Extra    |   4        |  			                       | 	                   |
+---------|------------|------------------------------------------------|---------------------------|
+Extra    |   5        |   			                       |	   		   |
+---------|------------|------------------------------------------------|---------------------------|
+
+MODULE DESCRIPTIONS:
+ Kruskal's algorithm, edges
+-------------------------------------------------------------------------------------------------------------------------|
+Module 1 (interface description):	Kruskal's algorithm finds the minimum spanning tree of a graph														
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature:
+public static WUGraph minSpanTree(WUGraph g)								
+
+
+
+Method Description:
+[1]  Creates a new graph T having the same vertices as G.
+[2]  Makes a list of all the edges in G.  	
+
+	[3]  Sorts the edges by weight.
+[4]  Finds the edges of T using disjoint sets and maps the
+ objects that serve as 
+	vertices to unique integers.  
+[5]  Returns the minimum spanning tree
+
+-------------------------------------------------------------------------------------------------------------------------|
+																				 
+
+																								 
+-------------------------------------------------------------------------------------------------------------------------|
+Module 2 (interface description): Vertex																					 
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature: public void addVertex(Object vertex)																						 
+																														 
+Method Description:
+addVertex() adds a vertex (with no incident edges) to the graph. The vertex's "name" is the object 
+	provided as the parameter "vertex". If this object is already a vertex of the graph, the graph is unchanged.	
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature: public void removeVertex(Object vertex)																						 
+																														 
+Method Description:removeVertex() removes a vertex from the graph. All edges incident on the deleted vertex are removed 
+	as well. If the parameter "vertex" does not represent a vertex of the graph, the graph is unchanged.	
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature: public boolean isVertex(Object vertex)																						 
+																														 
+Method Description:isVertex() returns true if the parameter "vertex" represents a vertex of the graph.		
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature: public int degree(Object vertex)																						 
+																														 
+Method Description:degree() returns the degree of a vertex. Self-edges add only one to the degree of a vertex. If the 
+	parameter "vertex" doesn't represent a vertex of the graph, zero is returned.																					 
+-------------------------------------------------------------------------------------------------------------------------|
+Module 3 (interface description):																						 
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature:																							 
+																														 
+Method Description:																					 																	 
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature:																							 
+																														 
+Method Description: 																					 																				 
+-------------------------------------------------------------------------------------------------------------------------|
+Module 4 (interface description):																						 
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature:																							 
+																														 
+Method Description:																					 								
+-------------------------------------------------------------------------------------------------------------------------|
+
+
+
+
+CLASS DESCRIPTIONS:
+
+-------------------------------------------------------------------------------------------------------------------------
+Class: Sort
+-public class that uses quicksort to sort Edge arrays.
+-------------------------------------------------------------------------------------------------------------------------
+Method: private static void swap(Object[] array, int i, int j)
+Description: Swaps two objects in an array
+-------------------------------------------------------------------------------------------------------------------------
+Method: private static int partition(Edge[] array, int begin, int end)
+Description: takes in an Edge array, and two ints: the beginning and end. If index or end is null, subtracts the index/end 
+int until it is not null. Partition sorts the Edge array and returns a new int index
+-------------------------------------------------------------------------------------------------------------------------
+Method: private static void swap(Object[] array, int i, int j)
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method: private static void qsort(Edge[] array, int begin, int end)
+Description: generic Quick Sort algorithm that handles arrays that are already sorted, and arrays with duplicate keys.
+-------------------------------------------------------------------------------------------------------------------------
+Method: public static void sort(Edge[] array)
+Description: Quick Sort algorithm
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+Class: Edge2
+-public class that represents an Edge, with the fields vertex1, vertex2, and weight
+-------------------------------------------------------------------------------------------------------------------------
+Method: public boolean isSameEdge(Object edge1, Object edge2)
+Description: Takes in edges and checks if their respective vertexes are equal. If so, returns true, and if not, returns false.
+-------------------------------------------------------------------------------------------------------------------------
+Method: public int compareTo(int pivot)
+Description: takes in an int (the pivot), and compares the weight of the edge to the pivot. 
+If the weight of the edge is greater, a positive number is returned, and if not, a negative number is returned.
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+Class: Kruskal
+-Description: The Kruskal class contains the method minSpanTree(), which implements Kruskal's algorithm for computing a 
+minimum spanning tree of a graph. 
+-------------------------------------------------------------------------------------------------------------------------
+Method: public static WUGraph minSpanTree(WUGraph g)
+Description: minSpanTree() returns a WUGraph that represents the minimum spanning tree of the WUGraph g. 
+The original WUGraph g is NOT changed.
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+Class:
+-DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+Class:
+-DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+Class:
+-DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+Class:
+-DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+Class:
+-DESCRIPTION
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
+Method:
+Description:
+-------------------------------------------------------------------------------------------------------------------------
