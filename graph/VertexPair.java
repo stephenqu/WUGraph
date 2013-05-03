@@ -14,7 +14,7 @@ class VertexPair {
   protected Object object1;
   protected Object object2;
 
-  protected VertexPair(Object o1, Object o2) {
+  protected VertexPair(Object o1, Object o2) { //might want to include parameter int l
     object1 = o1;
     object2 = o2;
   }

@@ -1,6 +1,7 @@
 /* HashTableChained.java */
 
 package hash;
+
 import list.*;
 
 /**
@@ -35,6 +36,9 @@ public class HashTableChained{
       int n = (int) ((double) (sizeEstimate) / MAX_LOAD);
       size = 0;
       table = new DList[computePrime(n)];
+	  for (int i=0; i<table.length; i++){
+		table[i] = new DList();
+	  }
   }
 
   /** 
@@ -45,6 +49,9 @@ public class HashTableChained{
   public HashTableChained() {
       table = new DList[101];
       size = 0;
+	  for (int i=0; i<table.length; i++){
+		table[i] = new DList();
+	  }
   }
 
   /**
@@ -142,7 +149,7 @@ public class HashTableChained{
    **/
 
   public void insert(Object item) {
-      resize();
+      //resize();
       int index = compFunction(item.hashCode());
       size++;
       table[index].insertBack(item);
@@ -159,6 +166,9 @@ public class HashTableChained{
    **/
 
   public Object find(Object item) {
+	  if (item == null){
+		return null;
+		}
       int index = compFunction(item.hashCode());
       DList list = (DList) table[index];
       for (DListNode node: list){
@@ -186,7 +196,10 @@ public class HashTableChained{
    */
 
   public Object remove(Object item) {
-      resize();
+	  if (item == null){
+		return null;
+		}
+      //resize();
       int index = compFunction(item.hashCode());
       DList list = (DList) table[index];
       for (DListNode node: list){
