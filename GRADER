@@ -68,7 +68,7 @@ Magdalene|   2        |   addVertex()		                       |  class WUGraph 	
 	 |	      |	  isVertex()     	 		       |         		   |	
 	 |	      | 	  				       |               		   |
 ---------|------------|------------------------------------------------|---------------------------|
-Stephen  |   3        |  getNeighbors()				       |			   |
+Stephen  |   3        |  getNeighbors()				       |  class WUGraph		   |
 	 |	      |	 addEdge()				       |			   |
 	 |	      |	 removeEdge()				       |			   |
 	 |	      |	 isEdge()				       |			   |
@@ -80,6 +80,8 @@ Extra    |   4        |  			                       | 	                   |
 Extra    |   5        |   			                       |	   		   |
 ---------|------------|------------------------------------------------|---------------------------|
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 MODULE DESCRIPTIONS:
  Kruskal's algorithm, edges
 -------------------------------------------------------------------------------------------------------------------------|
@@ -127,108 +129,164 @@ Method Signature: public int degree(Object vertex)
 Method Description:degree() returns the degree of a vertex. Self-edges add only one to the degree of a vertex. If the 
 	parameter "vertex" doesn't represent a vertex of the graph, zero is returned.																					 
 -------------------------------------------------------------------------------------------------------------------------|
-Module 3 (interface description):																						 
+Module 3 (interface description): Edges																					 
 -------------------------------------------------------------------------------------------------------------------------|
-Method Signature:																							 
+Method Signature: public Neighbors getNeighbors(Object vertex)																							 
 																														 
-Method Description:																					 																	 
+Method Description: getNeighbors() returns a new Neighbors object referencing two arrays. The Neighbors.neighborList 
+	array contains each object that is connected to the input object by an edge. The Neighbors.weightList array 
+	contains the weights of the corresponding edges. 																					 																	 
 -------------------------------------------------------------------------------------------------------------------------|
-Method Signature:																							 
+Method Signature: public void addEdge(Object u, Object v, int weight)																							 
 																														 
-Method Description: 																					 																				 
+Method Description: addEdge() adds an edge (u, v) to the graph. 													
 -------------------------------------------------------------------------------------------------------------------------|
-Module 4 (interface description):																						 
--------------------------------------------------------------------------------------------------------------------------|
-Method Signature:																							 
+Method Signature:public void removeEdge(Object u, Object v) 																					 
 																														 
-Method Description:																					 								
+Method Description: removeEdge() removes an edge (u, v) from the graph. If either of the parameters u and v does not 
+	represent a vertex of the graph, the graph is unchanged. If (u, v) is not an edge of the graph, the graph is 
+	unchanged.													
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature: public boolean isEdge(Object u, Object v)																							 
+																														 
+Method Description: isEdge() returns true if (u, v) is an edge of the graph. Returns false if (u, v) is not an edge 
+	(including the case where either of the parameters u and v does not represent a vertex of the graph).													
+-------------------------------------------------------------------------------------------------------------------------|
+Method Signature: public int weight(Object u, Object v)																							 
+																														 
+Method Description: weight() returns the weight of (u, v). Returns zero if (u, v) is not an edge (including the case 
+	where either of the parameters u and v does not represent a vertex of the graph).																					 																				 
 -------------------------------------------------------------------------------------------------------------------------|
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
 CLASS DESCRIPTIONS:
 
 -------------------------------------------------------------------------------------------------------------------------
-Class: Sort
--public class that uses quicksort to sort Edge arrays.
+Class: Sort-public class that uses quicksort to sort Edge arrays.
+
 -------------------------------------------------------------------------------------------------------------------------
 Method: private static void swap(Object[] array, int i, int j)
 Description: Swaps two objects in an array
 -------------------------------------------------------------------------------------------------------------------------
 Method: private static int partition(Edge[] array, int begin, int end)
-Description: takes in an Edge array, and two ints: the beginning and end. If index or end is null, subtracts the index/end 
+Description: takes in an Edge array, and two ints: the beginning and end. If index or end is null, subtracts the index/end
+	 
 int until it is not null. Partition sorts the Edge array and returns a new int index
 -------------------------------------------------------------------------------------------------------------------------
+
 Method: private static void swap(Object[] array, int i, int j)
-Description:
+Description: 
 -------------------------------------------------------------------------------------------------------------------------
+
 Method: private static void qsort(Edge[] array, int begin, int end)
 Description: generic Quick Sort algorithm that handles arrays that are already sorted, and arrays with duplicate keys.
 -------------------------------------------------------------------------------------------------------------------------
+
 Method: public static void sort(Edge[] array)
 Description: Quick Sort algorithm
--------------------------------------------------------------------------------------------------------------------------
-
-
 
 -------------------------------------------------------------------------------------------------------------------------
-Class: Edge2
--public class that represents an Edge, with the fields vertex1, vertex2, and weight
+
+
+
+-
+-------------------------------------------------------------------------------------------------------------------------
+
+Class: Edge2-public class that represents an Edge, with the fields vertex1, vertex2, and weight
+
 -------------------------------------------------------------------------------------------------------------------------
 Method: public boolean isSameEdge(Object edge1, Object edge2)
 Description: Takes in edges and checks if their respective vertexes are equal. If so, returns true, and if not, returns false.
 -------------------------------------------------------------------------------------------------------------------------
+
 Method: public int compareTo(int pivot)
 Description: takes in an int (the pivot), and compares the weight of the edge to the pivot. 
-If the weight of the edge is greater, a positive number is returned, and if not, a negative number is returned.
+If the weight of the edge is 
+	greater, a positive number is returned, and if not, a negative number is returned.
+
+
 -------------------------------------------------------------------------------------------------------------------------
 
 
-
 -------------------------------------------------------------------------------------------------------------------------
-Class: Kruskal
--Description: The Kruskal class contains the method minSpanTree(), which implements Kruskal's algorithm for computing a 
-minimum spanning tree of a graph. 
+Class: Kruskal-The Kruskal class contains the method minSpanTree(), which implements Kruskal's algorithm for computing a 
+	
+minimum spanning tree of a graph.
+
 -------------------------------------------------------------------------------------------------------------------------
 Method: public static WUGraph minSpanTree(WUGraph g)
 Description: minSpanTree() returns a WUGraph that represents the minimum spanning tree of the WUGraph g. 
-The original WUGraph g is NOT changed.
--------------------------------------------------------------------------------------------------------------------------
-
-
-
+The original 
+	WUGraph g is NOT changed.
 
 -------------------------------------------------------------------------------------------------------------------------
-Class:
+
+
+-------------------------------------------------------------------------------------------------------------------------
+Class: Vertex- creates a vertex object that consists the item, a DList of edges, and a reference to the node in the 
+	adjacency list
 -DESCRIPTION
+-------------------------------------------------------------------------------------------------------------
+Method: public int degree()
+Description: This degree() method returns the degree of the vertex. The degree is the number of edges coming out of 
+	this vertex
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public Object item()
+Description: This item() method returns the Vertex item itself, not the object which also has references to its edges
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public Vertex other(Edge e)
+Description: This other() method returns the corresponding vertex of the edge 
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public boolean equals(Vertex v)
+Description: This equals() method tells the program whether two vertices are equal, despite differences in their Dlist 
+	of edges
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public DList edges()
+Description: This edges() method allows something outside this program to access the Vertex's edges
+
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Class: Edge - This edge constructor creates an edge, which includes a VertexPair, its weight, and two references to 
+	its DListNode, to facilitate removal in O(1) time.
+-
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public int weight()
+Description:This weight() method returns the weight of the edge, which in itself is hidden.
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public void setWeight(int w)
+Description: This setWeight() method allows an outside source to change the weight of an edge, without violating 
+	abstraction rules.
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public boolean equals(Edge e)
+Description: This equals() method overrides the default equals method and compares whether an edge is the same as 
+	another edge, regardless of the order in which the vertices are provided and the edge's weight
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+Method: public int hashCode()
+Description: This hashcode method overrides the default one, by referring it to the hash code provided by VertexPair
+
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------
+Class: VertexPair - The VertexPair represents a pair of objects that act as vertices in a WUGraph (weighted, undirected 
+	graph).  The purpose of a VertexPair is to act as a key for Java's hashCode() and equals() functions.  It is 
+	designed so that the order of the two objects is immaterial; (u, v) is the same as (v, u).
+-
+-------------------------------------------------------------------------------------------------------------------------
+Method: public int hashCode()
+Description: hashCode() returns a hashCode equal to the sum of the hashCodes of each of the two objects of the pair, so 
+	that the order of the objects will not affect the hashCode. 
+-------------------------------------------------------------------------------------------------------------------------
+Method: public boolean equals(Object o)
+Description: equals() returns true if this VertexPair represents the same unordered pair of objects as the parameter "o".
+	The order of the pair does not affect the equality test, so (u, v) is found to be equal to (v, u).
+
 -------------------------------------------------------------------------------------------------------------------------
 
 
@@ -236,67 +294,56 @@ Description:
 
 
 -------------------------------------------------------------------------------------------------------------------------
-Class:
--DESCRIPTION
+Class: WUGraph - The WUGraph class represents a weighted, undirected graph. Self-edges are permitted.
+-
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public int vertexCount()
+Description: vertexCount() returns the number of vertices in the graph.
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public int edgeCount()
+Description: edgeCount() returns the number of edges in the graph.
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public Object[] getVertices()
+Description: getVertices() returns an array containing all the objects that serve as vertices of the graph. The array's 
+	length is exactly equal to the number of vertices. If the graph has no vertices, the array has length zero. 
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
--------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
--------------------------------------------------------------------------------------------------------------------------
-Class:
--DESCRIPTION
--------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
--------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
--------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
--------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public void addVertex(Object vertex)
+Description: addVertex() adds a vertex (with no incident edges) to the graph. The vertex's "name" is the object provided 
+	as the parameter "vertex". If this object is already a vertex of the graph, the graph is unchanged.
 -------------------------------------------------------------------------------------------------------------------------
 
 
 
 
 
+Method: public void removeVertex(Object vertex)
+Description: removeVertex() removes a vertex from the graph. All edges incident on the deleted vertex are removed 
+	as well. If the parameter "vertex" does not represent a vertex of the graph, the graph is unchanged.
 -------------------------------------------------------------------------------------------------------------------------
-Class:
--DESCRIPTION
+Method: public boolean isVertex(Object vertex)
+Description: isVertex() returns true if the parameter "vertex" represents a vertex of the graph.
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public int degree(Object vertex)
+Description: degree() returns the degree of a vertex. Self-edges add only one to the degree of a vertex. If the parameter 
+	"vertex" doesn't represent a vertex of the graph, zero is returned.
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public Neighbors getNeighbors(Object vertex)
+Description: getNeighbors() returns a new Neighbors object referencing two arrays. The Neighbors.neighborList array 
+	contains each object that is connected to the input object by an edge.
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public void addEdge(Object u, Object v, int weight)
+Description: addEdge() adds an edge (u, v) to the graph. 
 -------------------------------------------------------------------------------------------------------------------------
-Method:
-Description:
+Method: public void removeEdge(Object u, Object v)
+Description: removeEdge() removes an edge (u, v) from the graph. 
 -------------------------------------------------------------------------------------------------------------------------
-
-
-
-
+Method: public boolean isEdge(Object u, Object v)
+Description: isEdge() returns true if (u, v) is an edge of the graph.
+-------------------------------------------------------------------------------------------------------------------------
+Method: public int weight(Object u, Object v)
+Description: weight() returns the weight of (u, v). Returns zero if (u, v) is not an edge (including the case where 
+	either of the parameters u and v does not represent a vertex of the graph).
+-------------------------------------------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------------------------------------------
 Class:
